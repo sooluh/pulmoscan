@@ -1,5 +1,5 @@
 {
-	"name": "papais-next",
+	"name": "pulmoscan",
 	"version": "0.0.1",
 	"type": "module",
 	"scripts": {
@@ -16,6 +16,7 @@
 		"@sveltejs/adapter-auto": "^3.0.0",
 		"@sveltejs/kit": "^2.9.0",
 		"@sveltejs/vite-plugin-svelte": "^5.0.0",
+		"@types/node": "^22.10.1",
 		"autoprefixer": "^10.4.20",
 		"eslint": "^9.7.0",
 		"eslint-config-prettier": "^9.1.0",
@@ -34,6 +35,7 @@
 	"dependencies": {
 		"@tailwindcss/container-queries": "^0.1.1",
 		"@tailwindcss/forms": "^0.5.9",
-		"@tailwindcss/typography": "^0.5.15"
+		"@tailwindcss/typography": "^0.5.15",
+		"lucide-svelte": "^0.468.0"
 	}
 }
