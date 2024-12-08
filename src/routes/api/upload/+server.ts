@@ -21,15 +21,12 @@ const spawnPromise = (command: string, args: string[]): Promise<string> => {
 		});
 
 		process.stderr.on('data', (data) => {
-			const output = data.toString();
-
-			if (output.startsWith('PULMOSCAN: ')) {
-				error += output;
-			}
+			error += data.toString();
 		});
 
 		process.on('close', (code) => {
 			if (code !== 0) {
+				console.error(error);
 				reject(new Error(`Process exited with code ${code}: ${error}`));
 			} else {
 				resolve(result.trim());
@@ -76,13 +73,13 @@ export const POST: RequestHandler = async ({ request }) => {
 			return json({ error: 'Berkas yang diunggah bukan gambar X-ray' }, { status: 400 });
 		}
 
-		const clasify = await spawnPromise('python3', ['./interpreter/pulmoscan.py', filePath]);
+		const scan = await spawnPromise('python3', ['./interpreter/pulmoscan.py', filePath]);
 
-		if (clasify.trim() === 'PULMOSCAN: panic') {
+		if (scan.trim() === 'PULMOSCAN: panic') {
 			throw new Error('pulmoscan panic');
 		}
 
-		const parsed = JSON.parse(clasify.replace('PULMOSCAN: ', ''));
+		const parsed = JSON.parse(scan.replace('PULMOSCAN: ', ''));
 		return json({ message: 'Upload berhasil', class: parsed.class, scores: parsed.scores });
 	} catch (error) {
 		console.error('Error upload:', error);

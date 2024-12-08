@@ -1,6 +1,8 @@
 <script lang="ts">
 	import { ImageIcon, X, FileUp } from 'lucide-svelte';
 
+	export let result: { class: string; scores: number } | null = null;
+
 	let fileInput: HTMLInputElement;
 	let dragOver = false;
 	let file: File | null = null;
@@ -26,6 +28,7 @@
 		previewUrl = URL.createObjectURL(selectedFile);
 		file = selectedFile;
 		uploadError = null;
+		result = null;
 
 		return true;
 	}
@@ -53,6 +56,7 @@
 		isUploading = true;
 		uploadProgress = 0;
 		uploadError = null;
+		result = null;
 
 		const xhr = new XMLHttpRequest();
 		const formData = new FormData();
@@ -69,36 +73,28 @@
 			isUploading = false;
 
 			if (xhr.status === 200) {
-				const result = JSON.parse(xhr.responseText);
-				console.log('Upload berhasil:', result);
+				const response = JSON.parse(xhr.responseText);
+				result = { class: response.class, scores: response.scores };
 			} else {
 				const errorResponse = JSON.parse(xhr.responseText);
 				uploadError = errorResponse.error || 'Upload gagal';
+
+				clearFile(false);
 			}
 		};
 
 		xhr.onerror = () => {
 			isUploading = false;
 			uploadError = 'Gagal terhubung ke server';
-		};
 
-		xhr.onloadend = () => {
-			if (previewUrl) {
-				URL.revokeObjectURL(previewUrl);
-			}
-
-			file = null;
-			previewUrl = null;
-			uploadProgress = 0;
-
-			if (fileInput) fileInput.value = '';
+			clearFile(false);
 		};
 
 		xhr.open('POST', '/api/upload', true);
 		xhr.send(formData);
 	}
 
-	function clearFile() {
+	function clearFile(withError = true) {
 		if (previewUrl) {
 			URL.revokeObjectURL(previewUrl);
 		}
@@ -106,7 +102,11 @@
 		file = null;
 		previewUrl = null;
 		uploadProgress = 0;
-		uploadError = null;
+		result = null;
+
+		if (withError) {
+			uploadError = null;
+		}
 
 		if (fileInput) fileInput.value = '';
 	}
@@ -148,7 +148,7 @@
 				class="w-full rounded-lg object-cover shadow-md"
 			/>
 			<button
-				on:click={clearFile}
+				on:click={() => clearFile()}
 				class="absolute right-2 top-2 rounded-full bg-red-500 p-1 text-white"
 			>
 				<X class="h-5 w-5" />
@@ -168,7 +168,7 @@
 					></div>
 				</div>
 			</div>
-		{:else}
+		{:else if !result}
 			<button
 				on:click={uploadFile}
 				class="mt-4 flex w-full items-center justify-center space-x-2 rounded-lg bg-blue-500 px-4 py-2 text-white hover:bg-blue-600"

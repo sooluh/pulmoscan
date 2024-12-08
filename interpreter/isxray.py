@@ -23,7 +23,7 @@ def is_xray_image(image_path):
     return "PULMOSCAN: true" if prediction > 0.5 else "PULMOSCAN: false"
 
 if __name__ == "__main__":
-    if len(sys.argc) != 2:
+    if len(sys.argv) != 2:
         print('PULMOSCAN: panic')
         sys.exit(1)
 

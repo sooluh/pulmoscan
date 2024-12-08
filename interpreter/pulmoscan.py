@@ -37,7 +37,7 @@ def predict(image_path):
     return predicted_class, predicted_score
 
 if __name__ == "__main__":
-    if len(sys.argc) != 2:
+    if len(sys.argv) != 2:
         print('PULMOSCAN: panic')
         sys.exit(1)
 
