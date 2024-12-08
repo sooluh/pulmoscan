@@ -1,10 +1,5 @@
 <script lang="ts">
-	import Upload from '../components/Upload.svelte';
-
-	function handleUpload(event: CustomEvent<{ file: File }>) {
-		const file = event.detail.file;
-		console.log(file);
-	}
+	import Pulmoscan from '../components/Pulmoscan.svelte';
 </script>
 
 <main class="flex min-h-screen flex-col items-center justify-center bg-gray-100 p-4">
@@ -15,7 +10,7 @@
 			covid-19?
 		</p>
 
-		<Upload on:upload={handleUpload} />
+		<Pulmoscan />
 
 		<div class="rounded-lg bg-white p-6 shadow-md">
 			<h2 class="mb-2 text-2xl font-semibold text-gray-800">COVID-19</h2>
