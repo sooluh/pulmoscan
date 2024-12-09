@@ -33,6 +33,10 @@
 	];
 </script>
 
+<svelte:head>
+	<title>Pulmoscan</title>
+</svelte:head>
+
 <main class="relative flex min-h-screen flex-col items-center justify-center bg-gray-100 p-4">
 	<div class="absolute right-4 top-4">
 		<Button on:click={toggleModal} variant="outline" size="icon">
