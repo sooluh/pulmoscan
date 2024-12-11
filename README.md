@@ -84,3 +84,8 @@ sequenceDiagram
         ```bash
         pm2 start node --name pulmoscan -- -r dotenv/config build
         ```
+
+## Data Source
+
+- https://www.kaggle.com/datasets/paultimothymooney/chest-xray-pneumonia
+- https://www.kaggle.com/datasets/samuel156/lungxrays-grayscale
