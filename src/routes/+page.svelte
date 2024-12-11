@@ -37,35 +37,50 @@
   <title>Pulmoscan</title>
 </svelte:head>
 
-<main class="relative flex min-h-screen flex-col items-center justify-center bg-gray-100 p-4">
+<main class="relative flex min-h-screen flex-col bg-gray-100">
   <div class="absolute right-4 top-4">
     <Button on:click={toggleModal} variant="outline" size="icon">
       <InfoIcon class="h-4 w-4" />
     </Button>
   </div>
 
-  <div class="w-full max-w-md space-y-8 text-center">
-    <div class="space-y-2">
-      <h1 class="text-4xl font-bold text-gray-900">Pulmoscan</h1>
-      <p class="text-gray-600">Deteksi penyakit paru-paru dari gambar X-Ray Anda.</p>
-    </div>
-
-    <Pulmoscan bind:result />
-
-    {#if result}
-      <div class="rounded-lg bg-white p-6 shadow-md">
-        <h2 class="mb-2 text-2xl font-semibold text-gray-800">
-          {classes[result.class] || 'Tidak Diketahui'}
-        </h2>
-
-        <p class="text-gray-600">
-          Hasil analisis menunjukkan bahwa gambar X-Ray diklasifikasikan sebagai
-          <strong>{classes[result.class] || 'Tidak Diketahui'}</strong> dengan tingkat keyakinan
-          sebesar <strong>{result.scores}%</strong>.
-        </p>
+  <div class="flex flex-grow items-center justify-center">
+    <div class="w-full max-w-md space-y-8 p-4 text-center">
+      <div class="space-y-2">
+        <h1 class="text-4xl font-bold text-gray-900">Pulmoscan</h1>
+        <p class="text-gray-600">Deteksi penyakit paru-paru dari gambar X-Ray Anda</p>
       </div>
-    {/if}
+
+      <Pulmoscan bind:result />
+
+      {#if result}
+        <div class="rounded-lg bg-white p-6 shadow-md">
+          <h2 class="mb-2 text-2xl font-semibold text-gray-800">
+            {classes[result.class] || 'Tidak Diketahui'}
+          </h2>
+
+          <p class="text-gray-600">
+            Hasil analisis menunjukkan bahwa gambar X-Ray diklasifikasikan sebagai
+            <strong>{classes[result.class] || 'Tidak Diketahui'}</strong> dengan tingkat keyakinan
+            sebesar <strong>{result.scores}%</strong>.
+          </p>
+        </div>
+      {/if}
+    </div>
   </div>
+
+  <footer class="p-4 text-center text-sm text-gray-500">
+    <a
+      href="https://github.com/sooluh/pulmoscan"
+      class="text-blue-500 hover:underline"
+      target="_blank"
+      rel="noopener noreferrer"
+    >
+      GitHub
+    </a>
+    <span class="mx-2">&bullet;</span>
+    <span>Pulmoscan is an open-source project</span>
+  </footer>
 </main>
 
 <Modal bind:isOpen={isModalOpen} on:close={toggleModal}>
@@ -112,9 +127,5 @@
         </tr>
       </tbody>
     </Table>
-
-    <h2 class="my-4 text-xl font-bold">Tech Stack</h2>
-
-    <p>Python 3, SvelteKit</p>
   </div>
 </Modal>
