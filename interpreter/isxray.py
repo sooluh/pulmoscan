@@ -20,7 +20,7 @@ def is_xray_image(image_path):
     interpreter.invoke()
 
     prediction = interpreter.get_tensor(output_details[0]['index'])[0][0]
-    return "PULMOSCAN: true" if prediction > 0.5 else "PULMOSCAN: false"
+    return "PULMOSCAN: true" if prediction >= 0.5 else "PULMOSCAN: false"
 
 if __name__ == "__main__":
     if len(sys.argv) != 2:

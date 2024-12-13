@@ -47,7 +47,7 @@ export const POST: RequestHandler = async ({ request }) => {
       return json({ error: 'Tidak ada berkas yang diunggah' }, { status: 400 });
     }
 
-    const allowed = ['image/jpeg', 'image/png', 'image/gif', 'image/webp'];
+    const allowed = ['image/jpeg', 'image/png'];
 
     if (!allowed.includes(file.type)) {
       return json({ error: 'Tipe berkas tidak diizinkan' }, { status: 400 });
@@ -66,6 +66,7 @@ export const POST: RequestHandler = async ({ request }) => {
     await writeFile(filePath, buffer);
 
     const isxray = await spawnPromise('python3', ['./interpreter/isxray.py', filePath]);
+    console.log(`[isxray] ${isxray.trim()}`);
 
     if (isxray.trim() === 'PULMOSCAN: panic') {
       throw new Error('is xray panic');
@@ -76,6 +77,7 @@ export const POST: RequestHandler = async ({ request }) => {
     }
 
     const scan = await spawnPromise('python3', ['./interpreter/pulmoscan.py', filePath]);
+    console.log(`[scan] ${scan.trim()}`);
 
     if (scan.trim() === 'PULMOSCAN: panic') {
       throw new Error('pulmoscan panic');
